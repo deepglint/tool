@@ -1,0 +1,46 @@
+{
+    "KafkaInputConfig": {
+        "Hosts": [
+            "192.168.2.167:9092",
+            "192.168.2.167:9093",
+            "192.168.2.167:9094",
+            "192.168.2.167:9095",
+            "192.168.2.167:9096"
+        ],
+        "FormatFaceTopic": "face-topic",
+        "SendMessageTimeout": 5
+    },
+    "KafkaOutputConfig": {
+        "Hosts": [
+            "192.168.2.164:9092",
+            "192.168.2.164:9093",
+            "192.168.2.164:9094",
+            "192.168.2.164:9095",
+            "192.168.2.164:9096"
+        ],
+        "FormatFaceTopic": "face-topic",
+        "SendMessageTimeout": 5
+    },
+    "FTPOutputConfig": {
+        "Address": "192.168.2.215:21",
+        "Path": "./cq/YB26/",
+        "Username": "dell",
+        "Password": "dell@2016",
+        "MaxThread": 1
+    },
+    "FTPInputConfig": {
+        "Address": "192.168.2.215:21",
+        "Path": "./cq/YB26/",
+        "Username": "dell",
+        "Password": "dell@2016",
+        "MaxThread": 1
+    },
+    "SpeedLimit": 5,
+    "HopperOut": true,
+    "HopperIn": true,
+    "Devices": {
+        "YB26": "0c6ad25c-2cec-40f0-af70-5440d86a6802",
+        "YB27": "456",
+        "JLP3": "789"
+    }
+}

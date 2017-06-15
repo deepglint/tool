@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package dg.model;
+
+import "common.proto";
+import "searchcommon.proto";
+
+message VehicleBrandModel {
+	 int32 BrandId = 1;
+	 int32 SubBrandId = 2;
+	 int32 ModelYearId = 3;
+}
+
+message VehicleQuery {
+	BaseQuery BaseQuery = 1;
+
+	repeated string PlateText = 2;
+	repeated int32 TypeId = 3;
+	int32 TypeConfidence = 4;
+	repeated VehicleBrandModel VehicleBrandModels = 5;
+	int32 ModelTypeConfidence = 6;
+	repeated int32 ColorId = 7;
+	int32 ColorConfidence = 8;
+	repeated int32 PlateColor = 9;
+	int32 PlateColorConfidence = 10;
+	repeated int32 PlateType = 11;
+	int32 PlateTypeConfidence = 12;
+	repeated int32 Side = 13;
+	repeated bool HasSymbols = 14;
+	map<int32, bool> HasIllegals = 15;
+	map<int32, bool> HasCoIllegals = 16;
+
+	repeated int64 NotBusinessId = 32;
+	repeated int32 NotTypeId = 33;
+	repeated string NotPlateText = 34;
+	repeated int32 NotPlateColor = 35;
+	repeated int32 NotPlateType = 36;
+	repeated int32 NotSide = 37;
+
+	int32 SilencePeriod = 64; // new comer
+	int32 CooldownPeriod = 65; // foothold
+	int32 UsualAppearanceTimes = 66; //frequent
+	int32 MaxAppearanceTimes = 67; // frequent
+	string FollowPlateText = 68; // follower
+	int32 FollowingTimes = 69; // follower
+	int32 FollowingPeriodicPeriod = 70; // follower
+	int32 FollowingWholePeriod = 71; // follower
+	int32 PlateSimilarity = 72; // similar
+	int32 InvalidType = 73; // invalid
+}
+
+message VehicleFuzzyQuery {
+	repeated int64 Ids = 1;
+	int32 RepoId = 2;
+	repeated int32 SensorIds = 3;
+	int32 Limit = 4;
+}
+
+message VehicleTimeSpacial {
+	int32 RepoId = 1;
+	int32 SensorId = 2;
+	int64 Timestamp = 3; 
+} 
+
+message VehicleAuxiliaryInfo {
+	string ThumbnailImageUri = 1;
+	string DriverImageUri = 2;
+	string CodriverImageUri = 3;
+	map<string, bool> HasSymbols = 4;
+	map<string, bool> HasIllegals = 5;
+	map<string, bool> HasCoIllegals = 6;
+
+	int32 SilencePeriod = 8; // new comer
+	int32 CooldownPeriod = 9; // foothold
+	int32 FollowingPeriod = 10; // follower
+	int32 InvalidType = 11; // invalid
+	int32 SimilarConfidence = 12;
+	float FuzzyScore = 13;
+}
+
+message RetVehicle {
+	SrcMetadata Metadata = 1;
+    Image Img = 2;
+    RecVehicle RecVehicle = 3;
+    VehicleAuxiliaryInfo VehicleAuxiliaryInfo = 4;
+}
+
+message VehicleResult {
+	int32 AllSize = 1;
+	int32 ReturnedSize = 2;
+	repeated RetVehicle RetVehicles = 3;
+}
+
+message GroupVehicleAuxiliaryInfo {
+	int32 AppearenceTimes = 1; // frequent
+	int32 FollowingTimes = 2; // follower
+}
+
+message GroupVehicle {
+	repeated RetVehicle RetVehicles = 1;
+	GroupVehicleAuxiliaryInfo GroupVehicleAuxiliaryInfo = 2;
+}
+
+message GroupVehicleResult {
+	int32 AllSize = 1;
+	int32 ReturnedSize = 2;
+	repeated GroupVehicle GroupVehicle = 3;
+}
+
+message VehicleStatistics {
+	int32 RepoId = 1;
+	int32 SensorId = 2;
+	int32 Hour = 3;
+	string Plate = 4;
+	int32 Count = 5;
+}
+
+message VehicleStatisticsResult {
+	repeated VehicleStatistics Statistics = 1;
+}
