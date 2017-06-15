@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package dg.model;
+
+import "common.proto";
+import "searchcommon.proto";
+
+message PedestrianQuery {
+	BaseQuery BaseQuery = 1;
+
+	repeated int32 GenderId = 4;
+	float GenderConfidence = 5;
+	repeated int32 AgeId = 6;
+	float AgeConfidence = 7;
+	repeated int32 NationId = 8;
+	float NationConfidence = 9;
+	repeated int32 ColorId = 10;
+	float ColorConfidence = 11;
+
+	map<int32, PedestrianCategory> Categorys = 16;
+}
+
+message PedestrianCategory {
+	repeated int32 Items = 1;
+}
+
+message PedestrianResult {
+	int32 AllSize = 1;
+	int32 ReturnedSize = 2;
+	repeated RetPedestrian RetPedestrian = 3;
+}
+
+message RetPedestrian {
+	SrcMetadata Metadata = 1;
+    Image Img = 2;
+    RecPedestrian RecPedestrian = 3;
+    PedestrianAuxiliaryInfo PedestrianAuxiliaryInfo = 4;
+}
+
+message PedestrianAuxiliaryInfo {
+	string ThumbnailImageUri = 1;
+}
+
+message GroupPedestrianResult {
+	int32 AllSize = 1;
+	int32 ReturnedSize = 2;
+	repeated GroupRetPedestrian GroupRetPedestrian = 3;
+}
+
+message GroupRetPedestrian {
+	repeated RetPedestrian RetPedestrian = 1;
+}
+

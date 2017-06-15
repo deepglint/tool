@@ -1,0 +1,58 @@
+{
+    "Path": "./pic",
+    "Quality": {
+        "AlignScore": 0.9, 
+        "FaceAngle": 15,
+        "BlurScore": 0.5,
+        "MinHeight": 60,
+        "MinWidth": 60
+    },
+    "TransformConfig": {
+        "RecogniseURL": "192.168.2.164:9804",
+        "MaxThread": 20,
+        "TimeOut": 10,
+        "Etcd": {
+             "Addr":["http://127.0.0.1:2379"],
+             "FilterDir":"isdfilter",
+             "Interval":2,
+             "Timeout":5
+        },
+        "GetFeatureContext": {
+            "SessionId": "test123",
+            "UserName": "",
+            "Token": "",
+            "Functions": [
+                2,
+                20,
+                21
+            ],
+            "Type": 3,
+            "Storages": null,
+            "Params": null
+        },
+       "GetQualityContext": {
+            "SessionId": "test123",
+            "UserName": "",
+            "Token": "",
+            "Functions": [
+                2,
+                20,
+                22,
+                23
+            ],
+            "Type": 3,
+            "Storages": null,
+            "Params": null
+        },
+        "QualityThreshold":0,
+        "IsQulityFilterOpen":true,
+        "IsEdgeDetectionOpen":true,
+        "FaceDetectThreshold":0.7,
+        "Weed": {
+            "Host": "192.168.2.163:9333",
+            "Replication": "",
+            "Collection": "",
+            "TTLStr": "3M"
+            }
+    }
+}
