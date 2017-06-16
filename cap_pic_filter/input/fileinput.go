@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/deepglint/filter/configs"
+	"github.com/deepglint/tool/cap_pic_filter/configs"
 	"github.com/golang/glog"
 )
 

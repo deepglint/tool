@@ -1,6 +1,6 @@
 package configs
 
-import "github.com/deepglint/filter/dg.model"
+import "github.com/deepglint/tool/cap_pic_filter/dg.model"
 
 type FilterCenterConfig struct {
 	TransformConfig *MatrixTransformConfig

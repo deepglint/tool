@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/deepglint/filter/center"
-	"github.com/deepglint/filter/configs"
+	"github.com/deepglint/tool/cap_pic_filter/center"
+	"github.com/deepglint/tool/cap_pic_filter/configs"
 	"github.com/golang/glog"
 )
 

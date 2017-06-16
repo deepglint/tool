@@ -4,9 +4,9 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/deepglint/filter/configs"
-	"github.com/deepglint/filter/input"
-	"github.com/deepglint/filter/transform"
+	"github.com/deepglint/tool/cap_pic_filter/configs"
+	"github.com/deepglint/tool/cap_pic_filter/input"
+	"github.com/deepglint/tool/cap_pic_filter/transform"
 	"github.com/golang/glog"
 )
 

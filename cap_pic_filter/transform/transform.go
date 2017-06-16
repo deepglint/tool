@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/deepglint/filter/configs"
-	"github.com/deepglint/filter/dg.model"
+	"github.com/deepglint/tool/cap_pic_filter/configs"
+	"github.com/deepglint/tool/cap_pic_filter/dg.model"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )
