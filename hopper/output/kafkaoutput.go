@@ -1,7 +1,7 @@
 package output
 
 import (
-	"github.com/deepglint/hopper/config"
+	"github.com/deepglint/tool/hopper/config"
 
 	"errors"
 	"log"

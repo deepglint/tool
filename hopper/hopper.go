@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/deepglint/hopper/center"
-	"github.com/deepglint/hopper/config"
+	"github.com/deepglint/tool/hopper/center"
+	"github.com/deepglint/tool/hopper/config"
 
 	"encoding/json"
 	"io/ioutil"

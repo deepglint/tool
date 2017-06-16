@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"sync"
 
-	"github.com/deepglint/hopper/config"
-	"github.com/deepglint/hopper/utils"
+	"github.com/deepglint/tool/hopper/config"
+	"github.com/deepglint/tool/hopper/utils"
 
 	"github.com/deepglint/glog"
 	"github.com/ftp"

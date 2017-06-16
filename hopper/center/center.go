@@ -1,9 +1,9 @@
 package center
 
 import (
-	"github.com/deepglint/hopper/config"
-	"github.com/deepglint/hopper/input"
-	"github.com/deepglint/hopper/output"
+	"github.com/deepglint/tool/hopper/config"
+	"github.com/deepglint/tool/hopper/input"
+	"github.com/deepglint/tool/hopper/output"
 
 	"errors"
 	"sync"
