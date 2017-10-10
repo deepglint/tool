@@ -234,7 +234,7 @@ func (this *FTPInput) Start() error {
 
 				err = this.conn.Delete(datapath)
 				if err != nil {
-					glog.Errorln(err)
+					glog.Errorln(err, datapath)
 				}
 			}
 			return nil

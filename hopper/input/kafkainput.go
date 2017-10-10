@@ -74,6 +74,7 @@ func (this *KafkaInput) run(kafkaConsumer sarama.Consumer, partitionConsumer sar
 			continue
 		case kafkaMessage := <-partitionConsumer.Messages():
 			this.sendMessageWg.Add(1)
+			glog.Errorln(string(kafkaMessage.Value))
 			go func(recResult *[]byte) {
 				defer this.sendMessageWg.Done()
 				select {

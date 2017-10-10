@@ -1,22 +1,22 @@
 {
     "KafkaInputConfig": {
         "Hosts": [
-            "192.168.2.167:9092",
-            "192.168.2.167:9093",
-            "192.168.2.167:9094",
-            "192.168.2.167:9095",
-            "192.168.2.167:9096"
+            "f.deepglint.io:9092",
+            "f.deepglint.io:9093",
+            "f.deepglint.io:9094",
+            "f.deepglint.io:9095",
+            "f.deepglint.io:9096"
         ],
-        "FormatFaceTopic": "face-topic",
+        "FormatFaceTopic": "devo-topic",
         "SendMessageTimeout": 5
     },
     "KafkaOutputConfig": {
         "Hosts": [
-            "192.168.2.164:9092",
-            "192.168.2.164:9093",
-            "192.168.2.164:9094",
-            "192.168.2.164:9095",
-            "192.168.2.164:9096"
+            "211.103.220.74:8042",
+            "211.103.220.74:8043",
+            "211.103.220.74:8044",
+            "211.103.220.74:8045",
+            "211.103.220.74:8046"
         ],
         "FormatFaceTopic": "face-topic",
         "SendMessageTimeout": 5
@@ -37,7 +37,7 @@
     },
     "SpeedLimit": 5,
     "HopperOut": true,
-    "HopperIn": true,
+    "HopperIn": false,
     "Devices": {
         "YB26": "0c6ad25c-2cec-40f0-af70-5440d86a6802",
         "YB27": "456",
