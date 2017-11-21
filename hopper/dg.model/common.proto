@@ -15,18 +15,38 @@ message SrcMetadata {
 }
 
 message Cutboard {
-    uint32 X = 1;
-    uint32 Y = 2;
-    uint32 Width = 3;
-    uint32 Height = 4;
-    uint32 ResWidth = 5;
-    uint32 ResHeight = 6;
+    int32 X = 1;
+    int32 Y = 2;
+    int32 Width = 3;
+    int32 Height = 4;
+    int32 ResWidth = 5;
+    int32 ResHeight = 6;
     float Confidence = 7;
+}
+
+message PointF {
+    float X = 1;
+    float Y = 2;
+}
+
+message Rect {
+    int32 X = 1;
+    int32 Y = 2;
+    int32 Width = 3;
+    int32 Height = 4;
+}
+message RotatedRect {
+    float CenterX = 1;
+    float CenterY = 2;
+    float Width = 3;
+    float Height = 4;
+    float Angle = 5;
 }
 
 message CutboardImage {
     Cutboard Cutboard = 1;
     Image Img = 2;
+    RotatedRect Rect = 3;
 }
 
 message Color {
@@ -71,6 +91,20 @@ message NullMessage {
 
 }
 
+message FaceAttribute {
+    int32 AttributeId = 1;
+    string Name = 2;
+    int32 ValueId = 3;
+    float Confidence = 4;
+    oneof Value
+    {
+        bool ValueBool = 9;
+        int32 ValueInt = 10;
+        float ValueFloat = 11;
+        string ValueString = 12;
+    }
+}
+
 message Image {
     string Id = 1;
     int32 Width = 2;
@@ -79,18 +113,24 @@ message Image {
     string BinData = 5; // base64 format image
 }
 
-message RecFacePose{
-    int32 Type = 1;
-    repeated float Angles = 2;
+message FaceAlignResult {
+    repeated PointF LandMarks = 1;
+    repeated float LandMarkScores = 2;
+    Rect Box  = 3;
+    map<string, float> Scores = 4;
 }
+
 message RecFace {
     int64 Id = 1;
-    CutboardImage Img = 2;
-    string Features = 3;
-    float Confidence = 4;
-    RecFacePose Pose = 5;
-    float BlurScore = 6;
-    float AlignScore = 7;
+    float Confidence = 2;
+    CutboardImage Img = 3;
+    FaceAlignResult AlignResult = 4;
+    map<string, float> Qualities = 5;
+    string Features = 6;
+    repeated FaceAttribute Attributes = 7;
+
+    string FaceReId = 20;
+    bool QualityOK = 21;
 }
 
 enum SexType {
@@ -145,14 +185,6 @@ message RecVehicle {
     repeated LicensePlate Plates = 10;
     repeated Passenger Passengers = 11;
 }
-
-//enum NonMotorVehicleType {
-//    TRANSPORTATION_BICYCLE = 0;
-//    TRANSPORTATION_VEHICLE2 = 1;
-//    TRANSPORTATION_VEHICLE3 = 2;
-//    TRANSPORTATION_ROOF = 3;
-//    TRANSPORTATION_SEAL = 4;
-//}
 
 enum NonMotorVehicleGesture {
     ATTITUDE_POSITIVE = 0;
@@ -249,4 +281,9 @@ message PedestrianObj {
     SrcMetadata Metadata = 1;
     Image Img = 2;
     repeated RecPedestrian Pedestrian = 3;
+}
+message NonMotorVehicleObj {
+    SrcMetadata Metadata = 1;
+    Image Img = 2;
+    repeated RecNonMotorVehicle NonMotorVehicle = 3;
 }

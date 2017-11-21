@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/deepglint/tool/hopper/center"
 	"github.com/deepglint/tool/hopper/config"
 
@@ -13,6 +15,7 @@ import (
 
 func main() {
 
+	flag.Parse()
 	data, err := ioutil.ReadFile("config/config.json")
 
 	if err != nil {
@@ -27,7 +30,7 @@ func main() {
 		glog.Errorln("parse config err:", err)
 		return
 	}
-	glog.Errorf("%v", centerConfig)
+	glog.Infoln("%v", centerConfig)
 
 	center, err := center.NewCenter(centerConfig)
 	if err != nil {
@@ -53,7 +56,7 @@ func main() {
 	if centerConfig.HopperIn {
 		go func() {
 			for {
-				glog.Errorln("start")
+				glog.Infoln("start")
 				err := center.StartHopperIn()
 				if err != nil {
 					glog.Errorln("start hopper in err:", err, "restart center")

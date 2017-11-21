@@ -46,7 +46,7 @@ func NewKafkaWriter(config *config.Config) (*KafkaWriter, error) {
 		buffer:   make(chan []byte, amount*2),
 		last:     nil,
 	}
-	glog.Errorln(topic, addrlist)
+	glog.Infoln(topic, addrlist)
 	return w, nil
 }
 

@@ -90,7 +90,7 @@ func (this *FTPInput) Clean() error {
 
 func (this *FTPInput) walk(datapath string, cnt int, walkFn WalkFunc) (error, int) {
 	// ss, _ := utils.GbkToUtf8([]byte(datapath))
-	glog.Errorln("walking", string(datapath))
+	glog.Infoln("walking", string(datapath))
 
 	var entries []*ftp.Entry
 	var err error
@@ -134,7 +134,7 @@ func (this *FTPInput) walk(datapath string, cnt int, walkFn WalkFunc) (error, in
 					glog.Errorln(err)
 				}
 			}
-			glog.Errorln(cnt, this.speedlimit, time.Now())
+			glog.Infoln(cnt, this.speedlimit, time.Now())
 			if cnt >= this.speedlimit {
 				return errors.New("reach speedlimit"), 0
 			}
@@ -150,8 +150,7 @@ func (this *FTPInput) Start() error {
 
 	for _ = range time.NewTicker(time.Second).C {
 		err, count := this.walk(this.walkingpath, cnt, func(datapath string, f os.FileMode, err error) error {
-			glog.Errorln(datapath)
-
+			glog.Infoln(datapath)
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
 
@@ -187,6 +186,7 @@ func (this *FTPInput) Start() error {
 					glog.Warningf("Unmarshal models.GenericObj from protobuffer error: %s\n", err.Error())
 					return nil
 				}
+
 				pedestrians := &models.PedestrianObj{}
 				if obj.FmtType == models.DataFmtType_JSON {
 					err = json.Unmarshal(obj.BinData, pedestrians)

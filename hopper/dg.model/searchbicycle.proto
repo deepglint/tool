@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package dg.model;
-
-import "searchcommon.proto";
-
-message BicycleQuery {
-	BaseQuery BaseQuery = 1;
-}
