@@ -2,13 +2,13 @@ package output
 
 import (
 	"github.com/deepglint/tool/hopper/config"
+	"github.com/golang/glog"
 
 	"errors"
 	"log"
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/golang/glog"
 )
 
 type KafkaWriter struct {

@@ -5,17 +5,18 @@ import (
 	"context"
 	"errors"
 	"io"
+	"path"
+	"strings"
 	// "io/ioutil"
 	"encoding/json"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/deepglint/tool/hopper/config"
 	models "github.com/deepglint/tool/hopper/dg.model"
 	"github.com/deepglint/tool/hopper/output"
-	"github.com/deepglint/tool/hopper/utils"
-	"github.com/ftp"
+	"github.com/jlaffaye/ftp"
+
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 )
@@ -60,22 +61,10 @@ func (this *FTPInput) Setup(config *config.Config) error {
 		return err
 	}
 
-	for i := 0; i < 3; i++ {
-		if this.conn, err = ftp.DialTimeout(this.ip, time.Second*time.Duration(3)); err != nil {
-			continue
-		} else {
-			break
-		}
-	}
+	err = this.reConnectFTP()
+
 	if err != nil {
-		glog.Errorln(err)
 		return err
-	} else {
-		if err = this.conn.Login(this.username, this.password); err != nil {
-			glog.Errorln(err)
-			return err
-		} else {
-		}
 	}
 	return nil
 }
@@ -100,12 +89,20 @@ func (this *FTPInput) Clean() error {
 }
 
 func (this *FTPInput) walk(datapath string, cnt int, walkFn WalkFunc) (error, int) {
-	ss, _ := utils.GbkToUtf8([]byte(datapath))
-	glog.Errorln("walking", string(ss))
+	// ss, _ := utils.GbkToUtf8([]byte(datapath))
+	glog.Errorln("walking", string(datapath))
 
 	var entries []*ftp.Entry
 	var err error
 	if entries, err = this.conn.List(datapath); err != nil {
+		glog.Errorln("list files in ftp err:", err)
+		glog.Infoln("start reconnect ftp")
+		err = this.reConnectFTP()
+		if err != nil {
+			glog.Errorln("reconnect ftp err:", err)
+			return err, 0
+		}
+		glog.Warning("reconnect ftp success")
 		return err, 0
 	}
 	for _, entry := range entries {
@@ -124,6 +121,12 @@ func (this *FTPInput) walk(datapath string, cnt int, walkFn WalkFunc) (error, in
 			}
 		case ftp.EntryTypeFile:
 			cnt++
+			glog.Infoln(entry.Name, "后缀为:", path.Ext(entry.Name))
+			if strings.Contains(path.Ext(entry.Name), "tmp") {
+				glog.Infoln("后缀为tmp,被过滤")
+				continue
+			}
+
 			if err = walkFn(datapath+"/"+entry.Name, os.FileMode(0), nil); err != nil {
 				if err.Error() != "filename format error" {
 					return err, cnt
@@ -137,6 +140,7 @@ func (this *FTPInput) walk(datapath string, cnt int, walkFn WalkFunc) (error, in
 			}
 		}
 	}
+
 	return err, cnt
 }
 
@@ -158,7 +162,14 @@ func (this *FTPInput) Start() error {
 			default:
 				image, err := this.conn.Retr(datapath)
 				if err != nil {
-					glog.Errorln(err)
+					glog.Errorln("download data in ftp err:", err)
+					glog.Infoln("start reconnect ftp")
+					err = this.reConnectFTP()
+					if err != nil {
+						glog.Errorln("reconnect ftp err:", err)
+						return nil
+					}
+					glog.Warning("reconnect ftp success")
 					return nil
 				}
 				buf := new(bytes.Buffer)
@@ -195,9 +206,9 @@ func (this *FTPInput) Start() error {
 				}
 
 				old_sensorid := pedestrians.GetMetadata().SensorIdStr
-				filename := filepath.Base(filepath.Dir(datapath))
+				// filename := filepath.Base(filepath.Dir(datapath))
 				// glog.Errorf("filename: %s, pedestrian: %v", filename, pedestrians)
-				if id, ok := this.devices[filename]; ok {
+				if id, ok := this.devices[old_sensorid]; ok {
 					pedestrians.GetMetadata().SensorIdStr = id
 					glog.Errorln(old_sensorid, id)
 				} else {
@@ -232,10 +243,18 @@ func (this *FTPInput) Start() error {
 					return nil //omit write error
 				}
 
-				err = this.conn.Delete(datapath)
-				if err != nil {
-					glog.Errorln(err, datapath)
-				}
+				// err = this.conn.Delete(datapath)
+				// if err != nil {
+				// 	glog.Warning("delete data in ftp err:", err)
+				// 	glog.Warning("start reconnect ftp")
+				// 	err = this.reConnectFTP()
+				// 	if err != nil {
+				// 		glog.Warning("reconnect ftp err:", err)
+				// 	} else {
+				// 		glog.Warning("reconnect ftp success")
+				// 	}
+
+				// }
 			}
 			return nil
 		})
@@ -246,5 +265,30 @@ func (this *FTPInput) Start() error {
 		}
 	}
 
+	return nil
+}
+
+//re-connect ftp
+func (this *FTPInput) reConnectFTP() error {
+
+	if this.conn != nil {
+		this.conn.Logout()
+		this.conn.Quit()
+	}
+
+	var err error
+	//connect ftp
+	this.conn, err = ftp.Connect(this.ip)
+	if err != nil {
+		glog.Warningln(err)
+		return err
+	}
+
+	//login in
+	err = this.conn.Login(this.username, this.password)
+	if err != nil {
+		glog.Warningln(err)
+		return err
+	}
 	return nil
 }

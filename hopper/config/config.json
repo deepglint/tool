@@ -1,46 +1,46 @@
 {
     "KafkaInputConfig": {
         "Hosts": [
-            "f.deepglint.io:9092",
-            "f.deepglint.io:9093",
-            "f.deepglint.io:9094",
-            "f.deepglint.io:9095",
-            "f.deepglint.io:9096"
+            "21.56.15.205:9092",
+            "21.56.15.205:9093",
+            "21.56.15.205:9094",
+            "21.56.15.205:9095",
+            "21.56.15.205:9096"
         ],
         "FormatFaceTopic": "devo-topic",
         "SendMessageTimeout": 5
     },
     "KafkaOutputConfig": {
         "Hosts": [
-            "211.103.220.74:8042",
-            "211.103.220.74:8043",
-            "211.103.220.74:8044",
-            "211.103.220.74:8045",
-            "211.103.220.74:8046"
+            "21.56.15.205:9092",
+            "21.56.15.205:9093",
+            "21.56.15.205:9094",
+            "21.56.15.205:9095",
+            "21.56.15.205:9096"
         ],
         "FormatFaceTopic": "face-topic",
         "SendMessageTimeout": 5
     },
     "FTPOutputConfig": {
-        "Address": "192.168.2.215:21",
-        "Path": "./cq/YB26/",
-        "Username": "dell",
-        "Password": "dell@2016",
+        "Address": "21.56.15.205:21",
+        "Path": "./ztf/",
+        "Username": "uftp",
+        "Password": "dell@2017",
         "MaxThread": 1
     },
     "FTPInputConfig": {
-        "Address": "192.168.2.215:21",
-        "Path": "./cq/YB26/",
-        "Username": "dell",
-        "Password": "dell@2016",
+        "Address": "21.56.15.205:21",
+        "Path": "./ztf/",
+        "Username": "uftp",
+        "Password": "dell@2017",
         "MaxThread": 1
     },
     "SpeedLimit": 5,
-    "HopperOut": true,
-    "HopperIn": false,
+    "HopperOut": false,
+    "HopperIn": true,
     "Devices": {
-        "YB26": "0c6ad25c-2cec-40f0-af70-5440d86a6802",
-        "YB27": "456",
-        "JLP3": "789"
+        "0c6ad25c-2cec-40f0-af70-5440d86a6801": "0c6ad25c-2cec-40f0-af70-5440d86a6811",
+        "0c6ad25c-2cec-40f0-af70-5440d86a6802": "0c6ad25c-2cec-40f0-af70-5440d86a6812",
+        "0c6ad25c-2cec-40f0-af70-5440d86a6803": "0c6ad25c-2cec-40f0-af70-5440d86a6813"
     }
 }
