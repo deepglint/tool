@@ -212,6 +212,18 @@ func (this *FTPInput) Start() error {
 					pedestrians.GetMetadata().SensorIdStr = id
 					glog.Errorln(old_sensorid, id)
 				} else {
+					err = this.conn.Delete(datapath)
+					if err != nil {
+						glog.Warning("delete data:", datapath, " in ftp err:", err)
+						glog.Warning("start reconnect ftp")
+						err = this.reConnectFTP()
+						if err != nil {
+							glog.Warning("reconnect ftp err:", err)
+						} else {
+							glog.Warning("reconnect ftp success")
+						}
+
+					}
 					return nil
 				}
 				var body []byte
@@ -243,18 +255,18 @@ func (this *FTPInput) Start() error {
 					return nil //omit write error
 				}
 
-				// err = this.conn.Delete(datapath)
-				// if err != nil {
-				// 	glog.Warning("delete data in ftp err:", err)
-				// 	glog.Warning("start reconnect ftp")
-				// 	err = this.reConnectFTP()
-				// 	if err != nil {
-				// 		glog.Warning("reconnect ftp err:", err)
-				// 	} else {
-				// 		glog.Warning("reconnect ftp success")
-				// 	}
+				err = this.conn.Delete(datapath)
+				if err != nil {
+					glog.Warning("delete data in ftp err:", err)
+					glog.Warning("start reconnect ftp")
+					err = this.reConnectFTP()
+					if err != nil {
+						glog.Warning("reconnect ftp err:", err)
+					} else {
+						glog.Warning("reconnect ftp success")
+					}
 
-				// }
+				}
 			}
 			return nil
 		})
