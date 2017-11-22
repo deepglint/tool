@@ -5,6 +5,7 @@
 1.将kafka某个topic的信息写入FTP
 2.从FTP读取信息写入到kafka某个topic
 3.适配vsd1.1.0，matrix 0.8.0
+4.修复没有删除ftp数据问题
 ```
 
 ##使用说明
