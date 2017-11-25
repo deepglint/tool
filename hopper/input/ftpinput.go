@@ -189,6 +189,7 @@ func (this *FTPInput) Start() error {
 
 				if recResult.GetMeta() == nil {
 					glog.Warningln("recResult's Meta is nil")
+					return nil
 				}
 
 				old_sensorid := recResult.GetMeta().GetSensorId()
