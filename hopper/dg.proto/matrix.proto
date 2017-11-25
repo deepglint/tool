@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package dg.proto;
+
+message Meta {
+	int64 Timestamp = 1;
+	string SensorId = 2;
+	string CustomerSensorId = 3;
+
+	map<string, Attribute> Attributes = 4; // sensor type/name/attributes or customerd id/name/attributes
+}
+
+message Image {
+	string Id = 1;
+	string URL = 2;
+	string BinData = 3; // base64 encode
+	int32 Width = 4;
+	int32 Height = 5;
+
+	map<string, Attribute> Attributes = 6;
+}
+
+message Object {
+	string Id = 1;
+	int32 Level = 2; // 0,1,2,3...
+	string ParentId = 3; // sub-object
+	string ReId = 4;
+	string ReDuration = 5;
+	string Type = 6; // enum, vehicle, pedestrian, nonvehicle, symbol, plate, driver
+	float Confidence = 7;
+	string Feature = 8;
+	bool QualityOK = 9;
+
+	string URL = 16;
+	string BinData = 17;
+	int32 X = 18;
+	int32 Y = 19;
+	int32 RelativeWidth = 20;
+	int32 RelativeHeight = 21;
+	int32 AbsoluteWidth = 22;
+	int32 AbsoluteHeight = 23;
+
+	map<string, Attribute> Attributes = 32; // attribute type + attribute attribute
+	// key format: xx_yy_zz, unique
+}
+
+message Attribute {
+	int32 Id = 1;
+	string Name = 2;
+	ValueType ValueType = 3;
+	string Value = 4;
+	float Confidence = 5;
+	map<string, Attribute> MoreDetails = 6; 
+	int32 ValueId = 7;
+}
+
+message RecResult {
+	string Id = 1;
+	Meta Meta = 2;
+	Image Image = 3;
+	Image ThumbnailImage = 4;
+	repeated Object Objects = 5;
+}
+
+enum DetectionType {
+    DetectionType_Unknown = 0;
+    DetectionType_Face = 1;
+    DetectionType_Body = 2;
+    DetectionType_Vehicle = 3;
+}
+
+enum ValueType{
+	ValueType_Unknown = 0;
+    ValueType_String = 1;
+	ValueType_Int = 2;
+	ValueType_Float  = 3;
+	ValueType_Bool = 4;	
+}

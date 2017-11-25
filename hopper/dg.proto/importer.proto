@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package dg.proto;
+
+import "matrix.proto";
+
+message SensorFilter{
+	float QualityThreshold = 1;
+	bool IsRemoveDuplication = 2;
+}
+
+message ImporterResult{
+	RecResult RecResult = 1;
+	SensorFilter SensorFilter = 2;  
+}
+

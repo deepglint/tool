@@ -8,12 +8,12 @@ import (
 	"path"
 	"strings"
 	// "io/ioutil"
-	"encoding/json"
+
 	"os"
 	"time"
 
 	"github.com/deepglint/tool/hopper/config"
-	models "github.com/deepglint/tool/hopper/dg.model"
+	"github.com/deepglint/tool/hopper/dg.proto"
 	"github.com/deepglint/tool/hopper/output"
 	"github.com/jlaffaye/ftp"
 
@@ -180,37 +180,24 @@ func (this *FTPInput) Start() error {
 				defer image.Close()
 				// ioutil.WriteFile(filename, buf.Bytes(), 0644)
 
-				var obj models.GenericObj
-				err = proto.Unmarshal(buf.Bytes(), &obj)
+				var recResult *dg_proto.RecResult
+				err = proto.Unmarshal(buf.Bytes(), recResult)
 				if err != nil {
 					glog.Warningf("Unmarshal models.GenericObj from protobuffer error: %s\n", err.Error())
 					return nil
 				}
 
-				pedestrians := &models.PedestrianObj{}
-				if obj.FmtType == models.DataFmtType_JSON {
-					err = json.Unmarshal(obj.BinData, pedestrians)
-					if err != nil {
-						glog.Warningf("Unmarshal models.PedestrianObj from json error: %s\n", err.Error())
-						return nil
-					}
-				} else if obj.FmtType == models.DataFmtType_PROTOBUF {
-					err = proto.Unmarshal(obj.BinData, pedestrians)
-					if err != nil {
-						glog.Warningf("Unmarshal models.PedestrianObj from protobuffer error: %s\n", err.Error())
-						return nil
-					}
-				} else {
-					glog.Warningf("Can not recognize serialization type, FmtType=%d\n", obj.FmtType)
-					return nil
+				if recResult.GetMeta() == nil {
+					glog.Warningln("recResult's Meta is nil")
 				}
 
-				old_sensorid := pedestrians.GetMetadata().SensorIdStr
+				old_sensorid := recResult.GetMeta().GetSensorId()
+
 				// filename := filepath.Base(filepath.Dir(datapath))
 				// glog.Errorf("filename: %s, pedestrian: %v", filename, pedestrians)
 				if id, ok := this.devices[old_sensorid]; ok {
-					pedestrians.GetMetadata().SensorIdStr = id
-					glog.Errorln(old_sensorid, id)
+					recResult.Meta.SensorId = id
+					glog.Infoln(old_sensorid, id)
 				} else {
 					err = this.conn.Delete(datapath)
 					if err != nil {
@@ -226,25 +213,7 @@ func (this *FTPInput) Start() error {
 					return nil
 				}
 
-				var body []byte
-				if obj.FmtType == models.DataFmtType_JSON {
-					body, err = json.Marshal(pedestrians)
-					if err != nil {
-						glog.Warningf("Marshal models.PedestrianObj to json error: %s\n", err.Error())
-						return nil
-					}
-				} else if obj.FmtType == models.DataFmtType_PROTOBUF {
-					body, err = proto.Marshal(pedestrians)
-					if err != nil {
-						glog.Warningf("Marshal models.PedestrianObj to protobuffer error: %s\n", err.Error())
-						return nil
-					}
-				} else {
-					glog.Warningf("Can not recognize serialization type, FmtType=%d\n", obj.FmtType)
-					return nil
-				}
-				obj.BinData = body
-				info, err := proto.Marshal(&obj)
+				info, err := proto.Marshal(recResult)
 				if err != nil {
 					glog.Warningf("Marshal models.GenericObj to protobuffer error: %s\n", err.Error())
 					return nil

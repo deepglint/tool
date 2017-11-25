@@ -1,3 +1,9 @@
+#Hopper V2.0.0
+```
+实现face平台抓拍数据跳过网闸的功能
+1.将kafka某个topic的信息写入FTP
+```
+
 
 #Hopper V1.0.0
 ```
